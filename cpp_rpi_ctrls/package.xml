@@ -2,15 +2,28 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>cpp_rpi_ctrls</name>
-  <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <version>0.0.1</version>
+  <description>ros2 node to run on raspberry pi companion computer for relaying information and sending commands to px4 powered quadrotor drone</description>
   <maintainer email="mfarquharson1064@gmail.com">farquham</maintainer>
   <license>Apache-2.0</license>
 
+  <exec_depend>ros2launch</exec_depend>
+
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>eigen3_cmake_module</buildtool_depend>
+  <build_depend>eigen</build_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
+
+  <depend>rclcpp</depend>
+  <depend>geometry_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>rosdeps</depend>
+  <depend>px4_msgs</depend>
+
+  <buildtool_export_depend>eigen3_cmake_module</buildtool_export_depend>
+  <build_export_depend>eigen</build_export_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

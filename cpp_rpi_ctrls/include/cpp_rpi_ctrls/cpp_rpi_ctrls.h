@@ -13,20 +13,20 @@
 
 // geo ros msgs
 #include <geometry_msgs/msg/pose_stamped.hpp>
-// #include <geometry_msgs/msg/twist_stamped.hpp>
-// #include <geometry_msgs/msg/accel_stamped.hpp>
-// #include <geometry_msgs/msg/point.hpp>
+#include <geometry_msgs/msg/twist_stamped.hpp>
+#include <geometry_msgs/msg/accel_stamped.hpp>
+#include <geometry_msgs/msg/point.hpp>
 
 // px4 ros msgs
 #include <px4_msgs/msg/vehicle_odometry.hpp>
-// #include <px4_msgs/msg/vehicle_attitude.hpp>
-// #include <px4_msgs/msg/vehicle_local_position.hpp>
-// #include <px4_msgs/msg/vehicle_acceleration.hpp>
-// #include <px4_msgs/msg/vehicle_angular_velocity.hpp>
+#include <px4_msgs/msg/vehicle_attitude.hpp>
+#include <px4_msgs/msg/vehicle_local_position.hpp>
+#include <px4_msgs/msg/vehicle_acceleration.hpp>
+#include <px4_msgs/msg/vehicle_angular_velocity.hpp>
 //offboard control
-// #include <px4_msgs/msg/offboard_control_mode.hpp>
-// #include <px4_msgs/msg/trajectory_setpoint.hpp>
-// #include <px4_msgs/msg/vehicle_command.hpp>
+#include <px4_msgs/msg/offboard_control_mode.hpp>
+#include <px4_msgs/msg/trajectory_setpoint.hpp>
+#include <px4_msgs/msg/vehicle_command.hpp>
 
 // some nanespace stuff
 using namespace std::chrono;
@@ -63,9 +63,25 @@ namespace RPI {
 		}
 
 	private:
-		// needed rclcpp ptr stuff
+		// needed optitrack stuff
         rclcpp::Subscription<geometry_msgs::msg::PoseStamped>::SharedPtr odom_sub_;
         rclcpp::Publisher<px4_msgs::msg::VehicleOdometry>::SharedPtr odom_pub_;
+        // offboard control stuff
+        rclcpp::Publisher<px4_msgs::msg::OffboardControlMode>::SharedPtr offboard_control_mode_pub_;
+        rclcpp::Publisher<px4_msgs::msg::TrajectorySetpoint>::SharedPtr trajectory_setpoint_pub_;
+        rclcpp::Publisher<px4_msgs::msg::VehicleCommand>::SharedPtr vehicle_command_pub_;
+        // drone state subscribers
+        rclcpp::Subscription<px4_msgs::msg::VehicleAttitude>::SharedPtr vehicle_attitude_sub_;
+        rclcpp::Subscription<px4_msgs::msg::VehicleLocalPosition>::SharedPtr vehicle_local_position_sub_;
+        rclcpp::Subscription<px4_msgs::msg::VehicleAcceleration>::SharedPtr vehicle_acceleration_sub_;
+        rclcpp::Subscription<px4_msgs::msg::VehicleAngularVelocity>::SharedPtr vehicle_angular_velocity_sub_;
+        // gc comms stuff
+        // ext setpoint sub
+        rclcpp::Subscription<geometry_msgs::msg::Point>::SharedPtr ext_setpoint_sub_;
+        // state publishers
+        rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr pose_pub_;
+        rclcpp::Publisher<geometry_msgs::msg::TwistStamped>::SharedPtr twist_pub_;
+        rclcpp::Publisher<geometry_msgs::msg::AccelStamped>::SharedPtr accel_pub_;
 
         rclcpp::TimerBase::SharedPtr timer_;
 

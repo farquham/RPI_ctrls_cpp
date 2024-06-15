@@ -74,23 +74,25 @@ namespace RPI {
             offboard_setpoint_counter_ = 0;
 
             auto ob_timer_callback = [this]() -> void {
-                // what ever code to run every timer iteration
-                if (offboard_setpoint_counter_ == 10) {
-                    // Change to Offboard mode after 10 setpoints
-                    this->publish_vehicle_command(px4_msgs::msg::VehicleCommand::VEHICLE_CMD_DO_SET_MODE, 1, 6);
+                if ((abs(this->pos_cmd_[0]) > 0) || (abs(this->pos_cmd_[1]) > 0) || (abs(this->pos_cmd_[2]) > 0)) {
+                    // what ever code to run every timer iteration
+                    if (offboard_setpoint_counter_ == 10) {
+                        // Change to Offboard mode after 10 setpoints
+                        this->publish_vehicle_command(px4_msgs::msg::VehicleCommand::VEHICLE_CMD_DO_SET_MODE, 1, 6);
 
-                    // Arm the vehicle
-                    this->arm();
-                }
+                        // Arm the vehicle
+                        this->arm();
+                    }
 
-                // offboard_control_mode needs to be paired with trajectory_setpoint
-                publish_obctrl_mode();
-                publish_trajectory_setpoint(pos_cmd_);
+                    // offboard_control_mode needs to be paired with trajectory_setpoint
+                    publish_obctrl_mode();
+                    publish_trajectory_setpoint(pos_cmd_);
 
-                // stop the counter after reaching 11
-                if (offboard_setpoint_counter_ < 11) {
-                    offboard_setpoint_counter_++;
-                }		
+                    // stop the counter after reaching 11
+                    if (offboard_setpoint_counter_ < 11) {
+                        offboard_setpoint_counter_++;
+                    }	
+                }	
             };
 
             auto state_timer_callback = [this]() -> void {

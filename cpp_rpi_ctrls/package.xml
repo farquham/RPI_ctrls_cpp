@@ -21,6 +21,8 @@
   <depend>std_msgs</depend>
   <depend>rosdeps</depend>
   <depend>px4_msgs</depend>
+  <depend>px4_ros2_cpp</depend>
+  <depend>px4_ros_com</depend>
 
   <buildtool_export_depend>eigen3_cmake_module</buildtool_export_depend>
   <build_export_depend>eigen</build_export_depend>

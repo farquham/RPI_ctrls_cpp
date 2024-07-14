@@ -16,9 +16,11 @@ find_package(Eigen3 REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(px4_msgs REQUIRED)
+find_package(px4_ros2_cpp REQUIRED)
+find_package(px4_ros_com REQUIRED)
 
 add_executable(cpp_rpi_ctrls src/cpp_rpi_ctrls.cpp)
-ament_target_dependencies(cpp_rpi_ctrls rclcpp Eigen3 geometry_msgs std_msgs px4_msgs)
+ament_target_dependencies(cpp_rpi_ctrls rclcpp Eigen3 geometry_msgs std_msgs px4_msgs px4_ros2_cpp px4_ros_com)
 
 install(TARGETS
   cpp_rpi_ctrls

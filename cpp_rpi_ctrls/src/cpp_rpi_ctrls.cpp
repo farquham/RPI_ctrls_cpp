@@ -8,7 +8,7 @@ void RPI::rpictrls::odom_callback(const geometry_msgs::msg::PoseStamped::UniqueP
     this->quat_.x() = msg->pose.orientation.x;
     this->quat_.y() = -1*msg->pose.orientation.y;
     this->quat_.z() = -1*msg->pose.orientation.z;
-    RCLCPP_INFO(this->get_logger(), "Received odom pose: x=%f, y=%f, z=%f, qw=%f, qx=%f, qy=%f, qz=%f", this->pos_[0], this->pos_[1], this->pos_[2], this->quat_.w(), this->quat_.x(), this->quat_.y(), this->quat_.z());
+    //RCLCPP_INFO(this->get_logger(), "Received odom pose: x=%f, y=%f, z=%f, qw=%f, qx=%f, qy=%f, qz=%f", this->pos_[0], this->pos_[1], this->pos_[2], this->quat_.w(), this->quat_.x(), this->quat_.y(), this->quat_.z());
 }
 
 
@@ -26,7 +26,7 @@ void RPI::rpictrls::publish_odom(const Eigen::Vector3d pos, const Eigen::Quatern
     odom_msg.position_variance = {0.0, 0.0, 0.0};
     odom_msg.orientation_variance = {0.0, 0.0, 0.0};
     odom_pub_->publish(odom_msg);
-    RCLCPP_INFO(this->get_logger(), "Published odom: x=%f, y=%f, z=%f, qw=%f, qx=%f, qy=%f, qz=%f", pos[0], pos[1], pos[2], quat.w(), quat.x(), quat.y(), quat.z());
+    //RCLCPP_INFO(this->get_logger(), "Published odom: x=%f, y=%f, z=%f, qw=%f, qx=%f, qy=%f, qz=%f", pos[0], pos[1], pos[2], quat.w(), quat.x(), quat.y(), quat.z());
 }
 
 void RPI::rpictrls::arm() {
@@ -86,11 +86,11 @@ void RPI::rpictrls::vehicle_local_position_callback(const px4_msgs::msg::Vehicle
     this->pos_local[2] = -1*msg->z;
 }
 
-void RPI::rpictrls::vehicle_acceleration_callback(const px4_msgs::msg::VehicleAcceleration::UniquePtr & msg) {
-    this->accel_local[0] = msg->xyz[1];
-    this->accel_local[1] = msg->xyz[0];
-    this->accel_local[2] = -1*msg->xyz[2];
-}
+//void RPI::rpictrls::vehicle_acceleration_callback(const px4_msgs::msg::VehicleAcceleration::UniquePtr & msg) {
+//    this->accel_local[0] = msg->xyz[1];
+//    this->accel_local[1] = msg->xyz[0];
+//    this->accel_local[2] = -1*msg->xyz[2];
+//}
 
 void RPI::rpictrls::vehicle_angular_velocity_callback(const px4_msgs::msg::VehicleAngularVelocity::UniquePtr & msg) {
     this->avel_local[0] = msg->xyz[1];
@@ -130,5 +130,5 @@ void RPI::rpictrls::publish_state(const Eigen::Vector3d poslocal, const Eigen::Q
     accel_msg.accel.linear.z = accellocal[2];
     accel_pub_->publish(accel_msg);
 
-    RCLCPP_INFO(this->get_logger(), "Published state: x=%f, y=%f, z=%f, qw=%f, qx=%f, qy=%f, qz=%f, avelx=%f, avely=%f, avelz=%f, accelx=%f, accely=%f, accelz=%f", poslocal[0], poslocal[1], poslocal[2], quatlocal.w(), quatlocal.x(), quatlocal.y(), quatlocal.z(), avellocal[0], avellocal[1], avellocal[2], accellocal[0], accellocal[1], accellocal[2]);
+    //RCLCPP_INFO(this->get_logger(), "Published state: x=%f, y=%f, z=%f, qw=%f, qx=%f, qy=%f, qz=%f, avelx=%f, avely=%f, avelz=%f, accelx=%f, accely=%f, accelz=%f", poslocal[0], poslocal[1], poslocal[2], quatlocal.w(), quatlocal.x(), quatlocal.y(), quatlocal.z(), avellocal[0], avellocal[1], avellocal[2], accellocal[0], accellocal[1], accellocal[2]);
 }

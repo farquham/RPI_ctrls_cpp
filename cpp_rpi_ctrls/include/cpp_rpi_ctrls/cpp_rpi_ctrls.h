@@ -21,7 +21,7 @@
 #include <px4_msgs/msg/vehicle_odometry.hpp>
 #include <px4_msgs/msg/vehicle_attitude.hpp>
 #include <px4_msgs/msg/vehicle_local_position.hpp>
-#include <px4_msgs/msg/vehicle_acceleration.hpp>
+//#include <px4_msgs/msg/vehicle_acceleration.hpp>
 #include <px4_msgs/msg/vehicle_angular_velocity.hpp>
 //offboard control
 #include <px4_msgs/msg/offboard_control_mode.hpp>
@@ -54,7 +54,7 @@ namespace RPI {
             // drone state subscribers
             vehicle_attitude_sub_ = this->create_subscription<px4_msgs::msg::VehicleAttitude>("/fmu/out/vehicle_attitude", qos, std::bind(&rpictrls::vehicle_attitude_callback, this, std::placeholders::_1));
             vehicle_local_position_sub_ = this->create_subscription<px4_msgs::msg::VehicleLocalPosition>("/fmu/out/vehicle_local_position", qos, std::bind(&rpictrls::vehicle_local_position_callback, this, std::placeholders::_1));
-            vehicle_acceleration_sub_ = this->create_subscription<px4_msgs::msg::VehicleAcceleration>("/fmu/out/vehicle_acceleration", qos, std::bind(&rpictrls::vehicle_acceleration_callback, this, std::placeholders::_1));
+            //vehicle_acceleration_sub_ = this->create_subscription<px4_msgs::msg::VehicleAcceleration>("/fmu/out/vehicle_acceleration", qos, std::bind(&rpictrls::vehicle_acceleration_callback, this, std::placeholders::_1));
             vehicle_angular_velocity_sub_ = this->create_subscription<px4_msgs::msg::VehicleAngularVelocity>("/fmu/out/vehicle_angular_velocity", qos, std::bind(&rpictrls::vehicle_angular_velocity_callback, this, std::placeholders::_1));
 
             // ext setpoint sub
@@ -100,9 +100,9 @@ namespace RPI {
                 publish_state(pos_local, quat_local, avel_local, accel_local);			
             };
 
-			odom_timer_ = this->create_wall_timer(10ms, odom_timer_callback);
-            ob_timer_ = this->create_wall_timer(10ms, ob_timer_callback);
-            state_timer_ = this->create_wall_timer(10ms, state_timer_callback);
+	    odom_timer_ = this->create_wall_timer(20ms, odom_timer_callback);
+            ob_timer_ = this->create_wall_timer(100ms, ob_timer_callback);
+            state_timer_ = this->create_wall_timer(100ms, state_timer_callback);
 		}
         void arm();
         void disarm();
@@ -118,7 +118,7 @@ namespace RPI {
         // drone state subscribers
         rclcpp::Subscription<px4_msgs::msg::VehicleAttitude>::SharedPtr vehicle_attitude_sub_;
         rclcpp::Subscription<px4_msgs::msg::VehicleLocalPosition>::SharedPtr vehicle_local_position_sub_;
-        rclcpp::Subscription<px4_msgs::msg::VehicleAcceleration>::SharedPtr vehicle_acceleration_sub_;
+        //rclcpp::Subscription<px4_msgs::msg::VehicleAcceleration>::SharedPtr vehicle_acceleration_sub_;
         rclcpp::Subscription<px4_msgs::msg::VehicleAngularVelocity>::SharedPtr vehicle_angular_velocity_sub_;
         // gc comms stuff
         // ext setpoint sub
@@ -144,7 +144,7 @@ namespace RPI {
 
         void vehicle_attitude_callback(const px4_msgs::msg::VehicleAttitude::UniquePtr & msg);
         void vehicle_local_position_callback(const px4_msgs::msg::VehicleLocalPosition::UniquePtr & msg);
-        void vehicle_acceleration_callback(const px4_msgs::msg::VehicleAcceleration::UniquePtr & msg);
+        //void vehicle_acceleration_callback(const px4_msgs::msg::VehicleAcceleration::UniquePtr & msg);
         void vehicle_angular_velocity_callback(const px4_msgs::msg::VehicleAngularVelocity::UniquePtr & msg);
 
         void ext_setpoint_callback(const geometry_msgs::msg::Point::UniquePtr & msg);

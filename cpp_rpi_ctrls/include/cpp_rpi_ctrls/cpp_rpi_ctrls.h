@@ -56,6 +56,8 @@ class LocalNavigation : public px4_ros2::LocalPositionMeasurementInterface {
             twist_pub_ = node.create_publisher<geometry_msgs::msg::TwistStamped>("/rpi/out/vehicle_velocity", 10);
             accel_pub_ = node.create_publisher<geometry_msgs::msg::AccelStamped>("/rpi/out/vehicle_acceleration", 10);
 
+            // use px4_ros2 lib to control the drone too
+
             auto state_timer_callback = [this]() -> void {
                 // what ever code to run every timer iteration
                 publish_state(pos_local, quat_local, avel_local, accel_local);			

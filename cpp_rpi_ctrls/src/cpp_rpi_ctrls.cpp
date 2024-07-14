@@ -10,7 +10,7 @@ void LocalNavigation::odom_callback(const geometry_msgs::msg::PoseStamped::Uniqu
     this->quat_ros.z() = msg->pose.orientation.z;
     this->pos_px4 = px4_ros_com::frame_transforms::enu_to_ned_local_frame(this->pos_ros);
     this->quat_px4 = px4_ros_com::frame_transforms::ros_to_px4_orientation(this->quat_ros);
-    //RCLCPP_INFO(this->get_logger(), "Received odom pose: x=%f, y=%f, z=%f, qw=%f, qx=%f, qy=%f, qz=%f", this->pos_ros[0], this->pos_ros[1], this->pos_ros[2], this->quat_ros.w(), this->quat_ros.x(), this->quat_ros.y(), this->quat_ros.z());
+    RCLCPP_INFO(_node.get_logger(), "Received odom pose: x=%f, y=%f, z=%f, qw=%f, qx=%f, qy=%f, qz=%f", this->pos_ros[0], this->pos_ros[1], this->pos_ros[2], this->quat_ros.w(), this->quat_ros.x(), this->quat_ros.y(), this->quat_ros.z());
 }
 
 void LocalNavigation::updateLocalPosition() {
@@ -103,5 +103,5 @@ void LocalNavigation::publish_state(const Eigen::Vector3d poslocal, const Eigen:
     accel_msg.accel.linear.z = accellocal_ros[2];
     accel_pub_->publish(accel_msg);
 
-    //RCLCPP_INFO(this->get_logger(), "Published state: x=%f, y=%f, z=%f, qw=%f, qx=%f, qy=%f, qz=%f, avelx=%f, avely=%f, avelz=%f, accelx=%f, accely=%f, accelz=%f", poslocal_ros[0], poslocal_ros[1], poslocal_ros[2], quatlocal_ros.w(), quatlocal_ros.x(), quatlocal_ros.y(), quatlocal_ros.z(), avellocal_ros[0], avellocal_ros[1], avellocal_ros[2], accellocal_ros[0], accellocal_ros[1], accellocal_ros[2]);
+    RCLCPP_INFO(_node.get_logger(), "Published state: x=%f, y=%f, z=%f, qw=%f, qx=%f, qy=%f, qz=%f, avelx=%f, avely=%f, avelz=%f, accelx=%f, accely=%f, accelz=%f", poslocal_ros[0], poslocal_ros[1], poslocal_ros[2], quatlocal_ros.w(), quatlocal_ros.x(), quatlocal_ros.y(), quatlocal_ros.z(), avellocal_ros[0], avellocal_ros[1], avellocal_ros[2], accellocal_ros[0], accellocal_ros[1], accellocal_ros[2]);
 }

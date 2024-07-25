@@ -86,11 +86,11 @@ void RPI::rpictrls::vehicle_local_position_callback(const px4_msgs::msg::Vehicle
     this->pos_local[2] = -1*msg->z;
 }
 
-//void RPI::rpictrls::vehicle_acceleration_callback(const px4_msgs::msg::VehicleAcceleration::UniquePtr & msg) {
-//    this->accel_local[0] = msg->xyz[1];
-//    this->accel_local[1] = msg->xyz[0];
-//    this->accel_local[2] = -1*msg->xyz[2];
-//}
+void RPI::rpictrls::vehicle_acceleration_callback(const px4_msgs::msg::VehicleAcceleration::UniquePtr & msg) {
+    this->accel_local[0] = msg->xyz[1];
+    this->accel_local[1] = msg->xyz[0];
+    this->accel_local[2] = -1*msg->xyz[2];
+}
 
 void RPI::rpictrls::vehicle_angular_velocity_callback(const px4_msgs::msg::VehicleAngularVelocity::UniquePtr & msg) {
     this->avel_local[0] = msg->xyz[1];

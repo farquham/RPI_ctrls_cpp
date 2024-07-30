@@ -78,24 +78,28 @@ void RPI::rpictrls::vehicle_attitude_callback(const px4_msgs::msg::VehicleAttitu
     this->quat_local.x() = msg->q[2];
     this->quat_local.y() = msg->q[1];
     this->quat_local.z() = -1*msg->q[3];
+    RCLCPP_INFO(this->get_logger(), "Current Vehicle Attitude: w=%f, x=%f, y=%f, z=%f", this->quat_local.w(), this->quat_local.x(), this->quat_local.y(), this->quat_local.z());
 }
 
 void RPI::rpictrls::vehicle_local_position_callback(const px4_msgs::msg::VehicleLocalPosition::UniquePtr & msg) {
     this->pos_local[0] = msg->y;
     this->pos_local[1] = msg->x;
     this->pos_local[2] = -1*msg->z;
+    RCLCPP_INFO(this->get_logger(), "Current Vehicle Position: x=%f, y=%f, z=%f", this->pos_local[0], this->pos_local[1], this->pos_local[2]);
 }
 
 void RPI::rpictrls::vehicle_acceleration_callback(const px4_msgs::msg::VehicleAcceleration::UniquePtr & msg) {
     this->accel_local[0] = msg->xyz[1];
     this->accel_local[1] = msg->xyz[0];
     this->accel_local[2] = -1*msg->xyz[2];
+    RCLCPP_INFO(this->get_logger(), "Current Vehicle Acceleration: x=%f, y=%f, z=%f", this->accel_local[0], this->accel_local[1], this->accel_local[2]);
 }
 
 void RPI::rpictrls::vehicle_angular_velocity_callback(const px4_msgs::msg::VehicleAngularVelocity::UniquePtr & msg) {
     this->avel_local[0] = msg->xyz[1];
     this->avel_local[1] = msg->xyz[0];
     this->avel_local[2] = -1*msg->xyz[2];
+    RCLCPP_INFO(this->get_logger(), "Current Vehicle Angular Velocity: x=%f, y=%f, z=%f", this->avel_local[0], this->avel_local[1], this->avel_local[2]);
 }
 
 void RPI::rpictrls::ext_setpoint_callback(const geometry_msgs::msg::Point::UniquePtr & msg) {

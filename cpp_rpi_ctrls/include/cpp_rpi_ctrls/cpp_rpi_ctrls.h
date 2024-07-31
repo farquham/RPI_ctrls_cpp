@@ -19,10 +19,7 @@
 
 // px4 ros msgs
 #include <px4_msgs/msg/vehicle_odometry.hpp>
-#include <px4_msgs/msg/vehicle_attitude.hpp>
-#include <px4_msgs/msg/vehicle_local_position.hpp>
 #include <px4_msgs/msg/vehicle_acceleration.hpp>
-#include <px4_msgs/msg/vehicle_angular_velocity.hpp>
 //offboard control
 #include <px4_msgs/msg/offboard_control_mode.hpp>
 #include <px4_msgs/msg/trajectory_setpoint.hpp>
@@ -52,10 +49,8 @@ namespace RPI {
             vehicle_command_pub_ = this->create_publisher<px4_msgs::msg::VehicleCommand>("/fmu/in/vehicle_command", 10);
 
             // drone state subscribers
-            vehicle_attitude_sub_ = this->create_subscription<px4_msgs::msg::VehicleAttitude>("/fmu/out/vehicle_attitude", qos, std::bind(&rpictrls::vehicle_attitude_callback, this, std::placeholders::_1));
-            vehicle_local_position_sub_ = this->create_subscription<px4_msgs::msg::VehicleLocalPosition>("/fmu/out/vehicle_local_position", qos, std::bind(&rpictrls::vehicle_local_position_callback, this, std::placeholders::_1));
+            vehicle_odometry_sub_ = this->create_subscription<px4_msgs::msg::VehicleOdometry>("/fmu/out/vehicle_odometry", qos, std::bind(&rpictrls::vehicle_odometry_callback, this, std::placeholders::_1));
             vehicle_acceleration_sub_ = this->create_subscription<px4_msgs::msg::VehicleAcceleration>("/fmu/out/vehicle_acceleration", qos, std::bind(&rpictrls::vehicle_acceleration_callback, this, std::placeholders::_1));
-            vehicle_angular_velocity_sub_ = this->create_subscription<px4_msgs::msg::VehicleAngularVelocity>("/fmu/out/vehicle_angular_velocity", qos, std::bind(&rpictrls::vehicle_angular_velocity_callback, this, std::placeholders::_1));
 
             // ext setpoint sub
             ext_setpoint_sub_ = this->create_subscription<geometry_msgs::msg::Point>("/rpi/in/ext_cmdPoint", qos, std::bind(&rpictrls::ext_setpoint_callback, this, std::placeholders::_1));
@@ -97,7 +92,7 @@ namespace RPI {
 
             auto state_timer_callback = [this]() -> void {
                 // what ever code to run every timer iteration
-                publish_state(pos_local, quat_local, avel_local, accel_local);			
+                publish_state(pos_local, quat_local, vel_local, avel_local, accel_local);			
             };
 
 	    odom_timer_ = this->create_wall_timer(10ms, odom_timer_callback);
@@ -116,10 +111,8 @@ namespace RPI {
         rclcpp::Publisher<px4_msgs::msg::TrajectorySetpoint>::SharedPtr trajectory_setpoint_pub_;
         rclcpp::Publisher<px4_msgs::msg::VehicleCommand>::SharedPtr vehicle_command_pub_;
         // drone state subscribers
-        rclcpp::Subscription<px4_msgs::msg::VehicleAttitude>::SharedPtr vehicle_attitude_sub_;
-        rclcpp::Subscription<px4_msgs::msg::VehicleLocalPosition>::SharedPtr vehicle_local_position_sub_;
+        rclcpp::Subscription<px4_msgs::msg::VehicleOdometry>::SharedPtr vehicle_odometry_sub_;
         rclcpp::Subscription<px4_msgs::msg::VehicleAcceleration>::SharedPtr vehicle_acceleration_sub_;
-        rclcpp::Subscription<px4_msgs::msg::VehicleAngularVelocity>::SharedPtr vehicle_angular_velocity_sub_;
         // gc comms stuff
         // ext setpoint sub
         rclcpp::Subscription<geometry_msgs::msg::Point>::SharedPtr ext_setpoint_sub_;
@@ -142,14 +135,12 @@ namespace RPI {
         void publish_trajectory_setpoint(const Eigen::Vector3d pos);
         uint64_t offboard_setpoint_counter_;
 
-        void vehicle_attitude_callback(const px4_msgs::msg::VehicleAttitude::UniquePtr & msg);
-        void vehicle_local_position_callback(const px4_msgs::msg::VehicleLocalPosition::UniquePtr & msg);
+        void vehicle_odometry_callback(const px4_msgs::msg::VehicleOdometry::UniquePtr & msg);
         void vehicle_acceleration_callback(const px4_msgs::msg::VehicleAcceleration::UniquePtr & msg);
-        void vehicle_angular_velocity_callback(const px4_msgs::msg::VehicleAngularVelocity::UniquePtr & msg);
 
         void ext_setpoint_callback(const geometry_msgs::msg::Point::UniquePtr & msg);
 
-        void publish_state(const Eigen::Vector3d poslocal, const Eigen::Quaterniond quatlocal, const Eigen::Vector3d avellocal, const Eigen::Vector3d accellocal);
+        void publish_state(const Eigen::Vector3d poslocal, const Eigen::Quaterniond quatlocal, const Eigen::Vector3d vellocal, const Eigen::Vector3d avellocal, const Eigen::Vector3d accellocal);
 
         Eigen::Vector3d pos_;
         Eigen::Quaterniond quat_;
@@ -158,6 +149,7 @@ namespace RPI {
 
         Eigen::Vector3d pos_local;
         Eigen::Quaterniond quat_local;
+        Eigen::Vector3d vel_local;
         Eigen::Vector3d avel_local;
         Eigen::Vector3d accel_local;
 	};
